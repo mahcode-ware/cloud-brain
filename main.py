@@ -58,5 +58,15 @@ async def analyze_transaction(request: Request):
         "storage": "Distributed Cloud (Atlas)"
     }
 
+@app.get("/logs")
+async def get_logs():
+    # Fetch latest 50 logs from Atlas
+    cursor = transaction_collection.find().sort("timestamp", -1).limit(50)
+    logs = []
+    async for document in cursor:
+        document["_id"] = str(document["_id"]) # Convert ObjectId to string for JSON
+        logs.append(document)
+    return logs
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
