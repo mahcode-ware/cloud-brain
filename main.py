@@ -2,9 +2,16 @@ from fastapi import FastAPI, Request
 import time
 from motor.motor_asyncio import AsyncIOMotorClient
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # In production, replace with your Vercel URL
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # 1. ACTUAL CLOUD CONNECTION
 # Note: I added the database name "fraud_db" into the string
 MONGO_DETAILS = "mongodb+srv://shanmathibubbly_db_user:WAhb2iWIhdYPEZ4S@ps11.ed5cswy.mongodb.net/fraud_db?retryWrites=true&w=majority&appName=ps11"
